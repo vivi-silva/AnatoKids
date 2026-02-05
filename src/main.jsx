@@ -8,7 +8,7 @@ import { GameProvider } from "./state/GameContext.jsx";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <GameProvider>
-      <BrowserRouter>
+      <BrowserRouter basename="/AnatoKids">
         <App />
       </BrowserRouter>
     </GameProvider>
