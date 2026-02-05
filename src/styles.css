@@ -1,6 +1,3 @@
-/* ================================
-   GLOBAL / RESET
-================================ */
 :root {
   font-family: "Fredoka", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 
@@ -20,6 +17,7 @@
   --shadow: 0 18px 55px rgba(0, 0, 0, 0.14);
 }
 
+/* ===== Reset/Global ===== */
 * {
   box-sizing: border-box;
 }
@@ -28,9 +26,11 @@ html, body, #root {
   height: 100%;
 }
 
-/* Evita "zoom" do BG por causa de scrollbar aparecendo/sumindo */
+/* Evita layout shift quando a scrollbar aparece/some */
 html {
   scrollbar-gutter: stable;
+  /* melhora consistência de tipografia em diferentes renderizações */
+  text-size-adjust: 100%;
 }
 
 body {
@@ -38,19 +38,20 @@ body {
   color: var(--text);
   background: var(--bg);
 
-  /* mantém o espaço da scrollbar e evita layout shift */
-  overflow-y: scroll;
+  /* ✅ Zoom deve gerar scroll vertical, não corte */
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
+/* Herdar fonte nos inputs */
 button, input, select, textarea {
   font: inherit;
 }
 
-/* ================================
-   COMPONENTES GERAIS
-================================ */
+/* ===== Componentes gerais ===== */
 .page {
-  min-height: 100vh;
+  /* ✅ em vez de travar height, permite crescer */
+  min-height: 100dvh;
   padding: 28px 18px;
   display: grid;
   place-items: center;
@@ -78,9 +79,7 @@ button, input, select, textarea {
   font-weight: 700;
 }
 
-/* ================================
-   BOTÕES PADRÃO
-================================ */
+/* ===== Botões ===== */
 .btn {
   border: none;
   cursor: pointer;
@@ -120,13 +119,16 @@ button, input, select, textarea {
     0 0 0 6px rgba(255, 177, 77, 0.10);
 }
 
-/* ================================
-   FUNDO DO QUIZ (BG NAS TELAS)
-   - use <div className="gameBg"> em Level/Congrats/End
-================================ */
+/* ===== Fundo do Quiz =====
+   use <div className="gameBg"> em Level/Congrats/End
+*/
 .gameBg {
-  min-height: 100vh;
+  /* ✅ não trave em 100vh; permite crescer com conteúdo/zoom */
+  min-height: 100dvh;
   position: relative;
+
+  /* ✅ importante: evitar corte em zoom/telas baixas.
+     Se você quiser manter “sem scroll” em telas normais, isso fica por conta do .gameScreen/.gameCard */
   overflow: hidden;
 }
 
@@ -160,17 +162,20 @@ button, input, select, textarea {
   z-index: 2;
 }
 
-/* ================================
-   QUIZ FIT-TO-SCREEN + HUD OVERLAY
-================================ */
+/* ===== Quiz fit-to-screen + HUD overlay ===== */
 
-/* Tela do quiz: centraliza o card e não cria scroll */
+/* ✅ Em vez de height: 100vh (corta com zoom),
+   usamos min-height e deixamos o body rolar quando necessário */
 .gameScreen {
   position: relative;
-  height: 100vh;
+  min-height: 100dvh;
   display: grid;
   place-items: center;
+
   padding: clamp(12px, 2vh, 20px);
+
+  /* ✅ Se algum conteúdo exceder (zoom/tela baixa), permite scroll */
+  overflow: auto;
 }
 
 /* HUD no canto superior esquerdo (overlay) */
@@ -193,14 +198,10 @@ button, input, select, textarea {
 
   max-width: min(320px, 88vw);
 
-  /* ✅ IMPORTANTE: não deixa o overlay "roubar" cliques fora dos elementos */
+  /* não deixa o overlay “roubar” cliques fora dos elementos */
   pointer-events: none;
 }
-
-/* ✅ Só os elementos internos recebem clique */
-.hudOverlay > * {
-  pointer-events: auto;
-}
+.hudOverlay > * { pointer-events: auto; }
 
 .hudTitle {
   margin: 0;
@@ -229,10 +230,12 @@ button, input, select, textarea {
 /* Card principal do quiz */
 .gameCard {
   width: min(920px, 92vw);
-  height: 100%;
-  max-height: 100%;
 
+  /* ✅ Não trave height: 100% (isso depende do pai e pode cortar)
+     Use limites seguros + rolagem interna quando necessário */
+  max-height: calc(100dvh - clamp(24px, 4vh, 40px));
   padding: clamp(12px, 1.6vh, 18px);
+
   background: rgba(255, 255, 255, 0.80);
   border-radius: 22px;
   border: 1px solid rgba(20, 30, 80, 0.14);
@@ -245,6 +248,9 @@ button, input, select, textarea {
 
   position: relative;
   z-index: 2;
+
+  /* ✅ Se o conteúdo passar, rola dentro do card (em vez de cortar) */
+  overflow: auto;
 }
 
 .gameCard.centerOnly {
@@ -268,7 +274,9 @@ button, input, select, textarea {
 .videoFrame {
   width: 100%;
   aspect-ratio: 16 / 9;
-  min-height: 320px;
+
+  /* ✅ responsivo sem depender tanto de media queries */
+  min-height: clamp(200px, 36vh, 360px);
 
   background: #000;
   border-radius: 16px;
@@ -296,22 +304,20 @@ button, input, select, textarea {
   flex-wrap: wrap;
 }
 
-/* Ajuste para telas baixas */
-@media (max-height: 720px) {
-  .videoFrame { min-height: 260px; }
-}
-
-@media (max-height: 620px) {
-  .videoFrame { min-height: 220px; }
+/* Ajuste extra para telas MUITO baixas */
+@media (max-height: 520px) {
+  .hudOverlay { top: 10px; left: 10px; padding: 10px 12px; }
+  .hudTitle { font-size: 18px; }
+  .videoFrame { min-height: 180px; }
 }
 
 /* Acessibilidade: reduz movimento */
 @media (prefers-reduced-motion: reduce) {
-  .btn {
-    transition: none;
-  }
+  .btn { transition: none; }
+  .quizOverlay__panel { animation: none; }
 }
-/* ===== OVERLAY FEEDBACK (acertou/errou + continuar) ===== */
+
+/* ===== Overlay feedback (acertou/errou + continuar) ===== */
 
 .quizOverlay {
   position: fixed;
@@ -374,4 +380,3 @@ button, input, select, textarea {
   from { transform: scale(0.96); opacity: 0; }
   to   { transform: scale(1); opacity: 1; }
 }
-
