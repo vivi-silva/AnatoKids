@@ -249,6 +249,52 @@
   50%  { filter: brightness(1.06); }
   100% { filter: brightness(1); }
 }
+/* botão no canto superior */
+.home__topButton {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 30;
+  border: none;
+  border-radius: 999px;
+  padding: 12px 20px;
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+  background: linear-gradient(180deg, #ffd35f 0%, #ffb02e 100%);
+  color: #1f2340;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.home__topButton:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.03);
+}
+
+/* modal maior para imagem */
+.modal__panel--image {
+  width: min(1100px, 92vw);
+  max-height: 90vh;
+}
+
+.modal__imageWrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: auto;
+  padding: 8px 0;
+}
+
+.modal__image {
+  max-width: 100%;
+  max-height: 68vh;
+  object-fit: contain;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  background: white;
+}
 
 /* Acessibilidade */
 @media (prefers-reduced-motion: reduce) {

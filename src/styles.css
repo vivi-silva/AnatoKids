@@ -17,19 +17,21 @@
   --shadow: 0 18px 55px rgba(0, 0, 0, 0.14);
 }
 
-/* ===== Reset/Global ===== */
+/* ================================
+   RESET / GLOBAL
+================================ */
 * {
   box-sizing: border-box;
 }
 
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
 }
 
-/* Evita layout shift quando a scrollbar aparece/some */
 html {
   scrollbar-gutter: stable;
-  /* melhora consistência de tipografia em diferentes renderizações */
   text-size-adjust: 100%;
 }
 
@@ -37,20 +39,21 @@ body {
   margin: 0;
   color: var(--text);
   background: var(--bg);
-
-  /* ✅ Zoom deve gerar scroll vertical, não corte */
   overflow-x: hidden;
   overflow-y: auto;
 }
 
-/* Herdar fonte nos inputs */
-button, input, select, textarea {
+button,
+input,
+select,
+textarea {
   font: inherit;
 }
 
-/* ===== Componentes gerais ===== */
+/* ================================
+   COMPONENTES GERAIS
+================================ */
 .page {
-  /* ✅ em vez de travar height, permite crescer */
   min-height: 100dvh;
   padding: 28px 18px;
   display: grid;
@@ -79,7 +82,9 @@ button, input, select, textarea {
   font-weight: 700;
 }
 
-/* ===== Botões ===== */
+/* ================================
+   BOTÕES PADRÃO
+================================ */
 .btn {
   border: none;
   cursor: pointer;
@@ -106,7 +111,7 @@ button, input, select, textarea {
   background: var(--blue2);
   color: var(--text);
   border: 1px solid rgba(90, 168, 255, 0.45);
-  box-shadow: 0 14px 40px rgba(0,0,0,0.10);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.10);
 }
 
 .btn-gold {
@@ -114,25 +119,20 @@ button, input, select, textarea {
   color: #1b1030;
   border: 2px solid rgba(255, 214, 120, 0.55);
   box-shadow:
-    0 12px 0 rgba(0,0,0,0.10),
+    0 12px 0 rgba(0, 0, 0, 0.10),
     0 18px 55px rgba(255, 177, 77, 0.22),
     0 0 0 6px rgba(255, 177, 77, 0.10);
 }
 
-/* ===== Fundo do Quiz =====
-   use <div className="gameBg"> em Level/Congrats/End
-*/
+/* ================================
+   FUNDO DO QUIZ
+================================ */
 .gameBg {
-  /* ✅ não trave em 100vh; permite crescer com conteúdo/zoom */
   min-height: 100dvh;
   position: relative;
-
-  /* ✅ importante: evitar corte em zoom/telas baixas.
-     Se você quiser manter “sem scroll” em telas normais, isso fica por conta do .gameScreen/.gameCard */
-  overflow: hidden;
+  overflow: visible;
 }
 
-/* imagem de fundo */
 .gameBg::before {
   content: "";
   position: absolute;
@@ -141,100 +141,158 @@ button, input, select, textarea {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-
   filter: brightness(1.10) saturate(1.10);
-  transform: none;
   z-index: 0;
 }
 
-/* overlay leve */
 .gameBg::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgba(255,255,255,0.10), rgba(255,255,255,0.02));
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0.02));
   z-index: 1;
 }
 
-/* conteúdo acima do BG */
 .gameBg > * {
   position: relative;
   z-index: 2;
 }
 
-/* ===== Quiz fit-to-screen + HUD overlay ===== */
-
-/* ✅ Em vez de height: 100vh (corta com zoom),
-   usamos min-height e deixamos o body rolar quando necessário */
+/* ================================
+   QUIZ: ESTRUTURA GERAL
+================================ */
 .gameScreen {
-  position: relative;
   min-height: 100dvh;
   display: grid;
-  place-items: center;
-
-  padding: clamp(12px, 2vh, 20px);
-
-  /* ✅ Se algum conteúdo exceder (zoom/tela baixa), permite scroll */
-  overflow: auto;
+  justify-items: center;
+  align-content: start;
+  padding: 10px 16px 24px;
+  gap: 10px;
+  overflow: visible;
 }
 
-/* HUD no canto superior esquerdo (overlay) */
+/* ================================
+   HUD COM BARRA FINA DE PROGRESSO
+================================ */
 .hudOverlay {
-  position: absolute;
-  top: 16px;
-  left: 16px;
-  z-index: 5;
+  position: sticky;
+  top: 8px;
+  z-index: 20;
 
-  display: grid;
-  gap: 6px;
+  width: min(1200px, 96vw);
+  padding: 10px 16px;
 
-  padding: 12px 14px;
-  border-radius: 16px;
-
-  background: rgba(255, 255, 255, 0.75);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.84);
   border: 1px solid rgba(20, 30, 80, 0.15);
   box-shadow: 0 12px 36px rgba(0, 0, 0, 0.12);
-  backdrop-filter: blur(6px);
+  backdrop-filter: blur(8px);
 
-  max-width: min(320px, 88vw);
-
-  /* não deixa o overlay “roubar” cliques fora dos elementos */
   pointer-events: none;
 }
-.hudOverlay > * { pointer-events: auto; }
+
+.hudOverlay > * {
+  pointer-events: auto;
+}
+
+.hudBar {
+  display: grid;
+  grid-template-columns: auto minmax(280px, 1fr) auto;
+  align-items: center;
+  gap: 18px;
+}
+
+.hudBar__left {
+  display: flex;
+  align-items: center;
+}
+
+.hudBar__center {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.hudBar__right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 
 .hudTitle {
   margin: 0;
   font-weight: 1000;
-  font-size: 20px;
+  font-size: 1.15rem;
+  line-height: 1.1;
+  white-space: nowrap;
 }
 
-.hudMeta {
-  margin: 0;
-  font-weight: 850;
-  font-size: 14px;
-  color: rgba(11, 22, 48, 0.75);
+.progressLine {
+  position: relative;
+  width: 100%;
+  height: 24px;
+  border-radius: 999px;
+  overflow: hidden;
+
+  background: rgba(90, 168, 255, 0.16);
+  border: 1px solid rgba(90, 168, 255, 0.25);
+  box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.08);
 }
 
-.scorePill {
-  align-self: flex-start;
-  padding: 8px 10px;
-  border-radius: 14px;
+.progressLine__fill {
+  position: absolute;
+  left: 0;
+  top: -2px;
+  height: 24px;
+  width: 0%;
+  border-radius: 999px;
+
+  background: linear-gradient(90deg, #7fe8ff 0%, #2c86ff 55%, #1a46ff 100%);
+  box-shadow:
+    inset 0 -1px 0 rgba(255, 255, 255, 0.25),
+    0 0 10px rgba(44, 134, 255, 0.22);
+
+  transition: width 0.28s ease;
+}
+
+.progressLine__label {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+
+  font-size: 0.92rem;
   font-weight: 1000;
-
-  background: rgba(255, 240, 160, 0.72);
-  border: 1px solid rgba(255, 214, 120, 0.55);
-  color: rgba(27, 16, 48, 0.95);
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+  pointer-events: none;
 }
 
-/* Card principal do quiz */
-.gameCard {
-  width: min(920px, 92vw);
+.scoreBadge {
+  min-width: 74px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  text-align: center;
+  font-weight: 1000;
+  white-space: nowrap;
 
-  /* ✅ Não trave height: 100% (isso depende do pai e pode cortar)
-     Use limites seguros + rolagem interna quando necessário */
-  max-height: calc(100dvh - clamp(24px, 4vh, 40px));
-  padding: clamp(12px, 1.6vh, 18px);
+  background: linear-gradient(180deg, var(--gold1), var(--gold2));
+  color: #1b1030;
+  border: 1px solid rgba(255, 214, 120, 0.6);
+  box-shadow:
+    0 8px 18px rgba(255, 177, 77, 0.22),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.06);
+}
+
+/* ================================
+   CARD DO QUIZ
+================================ */
+.gameCard {
+  width: min(1200px, 96vw);
+  min-height: calc(100dvh - 120px);
+  margin-top: 0;
+
+  padding: 20px;
 
   background: rgba(255, 255, 255, 0.80);
   border-radius: 22px;
@@ -243,21 +301,17 @@ button, input, select, textarea {
   backdrop-filter: blur(6px);
 
   display: grid;
-  grid-template-rows: auto 1fr auto auto;
-  gap: clamp(10px, 1.4vh, 14px);
+  grid-template-rows: auto 1fr auto;
+  gap: 16px;
 
   position: relative;
   z-index: 2;
-
-  /* ✅ Se o conteúdo passar, rola dentro do card (em vez de cortar) */
-  overflow: auto;
 }
 
 .gameCard.centerOnly {
   place-items: center;
 }
 
-/* Textos do quiz */
 .quizPrompt {
   margin: 0;
   font-weight: 900;
@@ -270,33 +324,126 @@ button, input, select, textarea {
   text-align: center;
 }
 
-/* Vídeo: retângulo bom para Libras */
+/* ================================
+   LAYOUT DO QUIZ
+================================ */
+.quizLayout {
+  display: grid;
+  grid-template-columns: 1.8fr 1fr;
+  gap: 28px;
+  align-items: stretch;
+  min-height: 0;
+  height: 100%;
+}
+
+.quizLayout__video,
+.quizLayout__answers {
+  width: 100%;
+  min-width: 0;
+}
+
+/* ================================
+   VÍDEO
+================================ */
 .videoFrame {
   width: 100%;
-  aspect-ratio: 16 / 9;
-
-  /* ✅ responsivo sem depender tanto de media queries */
-  min-height: clamp(200px, 36vh, 360px);
+  height: 100%;
+  min-height: 520px;
 
   background: #000;
-  border-radius: 16px;
+  border-radius: 18px;
   overflow: hidden;
   border: 1px solid rgba(20, 30, 80, 0.12);
+}
+
+.videoFrame--large {
+  min-height: 520px;
 }
 
 .videoFrame video {
   width: 100%;
   height: 100%;
-  object-fit: contain; /* não corta a sinalização */
+  object-fit: contain;
   display: block;
 }
 
-/* Respostas e ações */
+/* ================================
+   RESPOSTAS
+================================ */
 .answerGrid {
-  display: grid;
-  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  height: 100%;
+  justify-content: space-between;
 }
 
+.answerGrid--vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  height: 100%;
+  justify-content: space-between;
+}
+
+.optionBtn {
+  width: 100%;
+  min-height: 118px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+
+  gap: 14px;
+  padding: 22px 24px;
+  border-radius: 18px;
+  text-align: left;
+}
+
+.optionBtn,
+.optionBtn--vertical {
+  min-height: 180px;
+  padding: 28px 30px;
+}
+
+.optionBtn__pt {
+  font-size: 1.5rem;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.optionBtn__dati {
+  font-size: 2.4rem;
+  line-height: 1.1;
+}
+
+.optionBtn__content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+}
+
+.optionBtn__image {
+  width: 130px;
+  height: 130px;
+  object-fit: contain;
+  flex-shrink: 0;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.35);
+  padding: 10px;
+}
+
+.optionBtn__texts {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+/* ================================
+   AÇÕES
+================================ */
 .actionsRow {
   display: flex;
   gap: 10px;
@@ -304,21 +451,9 @@ button, input, select, textarea {
   flex-wrap: wrap;
 }
 
-/* Ajuste extra para telas MUITO baixas */
-@media (max-height: 520px) {
-  .hudOverlay { top: 10px; left: 10px; padding: 10px 12px; }
-  .hudTitle { font-size: 18px; }
-  .videoFrame { min-height: 180px; }
-}
-
-/* Acessibilidade: reduz movimento */
-@media (prefers-reduced-motion: reduce) {
-  .btn { transition: none; }
-  .quizOverlay__panel { animation: none; }
-}
-
-/* ===== Overlay feedback (acertou/errou + continuar) ===== */
-
+/* ================================
+   OVERLAY FEEDBACK
+================================ */
 .quizOverlay {
   position: fixed;
   inset: 0;
@@ -351,11 +486,6 @@ button, input, select, textarea {
   animation: popIn 0.16s ease-out;
 }
 
-.quizOverlay__icon {
-  font-size: 44px;
-  line-height: 1;
-}
-
 .quizOverlay__title {
   margin: 0;
   font-weight: 1000;
@@ -377,6 +507,104 @@ button, input, select, textarea {
 }
 
 @keyframes popIn {
-  from { transform: scale(0.96); opacity: 0; }
-  to   { transform: scale(1); opacity: 1; }
+  from {
+    transform: scale(0.96);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ================================
+   TELAS MAIS BAIXAS
+================================ */
+@media (max-height: 700px) {
+  .videoFrame,
+  .videoFrame--large {
+    min-height: 400px;
+  }
+
+  .gameCard {
+    min-height: auto;
+  }
+}
+
+/* ================================
+   RESPONSIVO
+================================ */
+@media (max-width: 980px) {
+  .hudBar {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .hudBar__right {
+    justify-content: space-between;
+  }
+
+  .scoreBadge {
+    min-width: auto;
+  }
+
+  .gameCard {
+    min-height: auto;
+  }
+
+  .quizLayout {
+    grid-template-columns: 1fr;
+    min-height: auto;
+    height: auto;
+  }
+
+  .videoFrame,
+  .videoFrame--large {
+    min-height: 320px;
+  }
+
+  .answerGrid,
+  .answerGrid--vertical {
+    height: auto;
+    justify-content: flex-start;
+  }
+
+  .optionBtn,
+  .optionBtn--vertical {
+    min-height: 96px;
+    padding: 18px 20px;
+  }
+
+  .optionBtn__pt {
+    font-size: 1.08rem;
+  }
+
+  .optionBtn__dati {
+    font-size: 1.5rem;
+  }
+  .optionBtn__image {
+  width: 58px;
+  height: 58px;
+}
+
+.optionBtn__content {
+  gap: 14px;
+}
+}
+
+/* ================================
+   Acessibilidade
+================================ */
+@media (prefers-reduced-motion: reduce) {
+  .btn {
+    transition: none;
+  }
+
+  .progressLine__fill {
+    transition: none;
+  }
+
+  .quizOverlay__panel {
+    animation: none;
+  }
 }

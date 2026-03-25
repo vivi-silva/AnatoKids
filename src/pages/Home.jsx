@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useGame } from "../state/GameContext.jsx";
 import "./home.css";
@@ -25,14 +25,17 @@ function TitleLogo() {
             <stop offset="100%" stopColor="#ff9f2e" />
           </linearGradient>
 
-          {/* sombra suave */}
           <filter id="softShadow" x="-20%" y="-20%" width="140%" height="160%">
-            <feDropShadow dx="0" dy="10" stdDeviation="10" floodColor="#000" floodOpacity="0.35" />
+            <feDropShadow
+              dx="0"
+              dy="10"
+              stdDeviation="10"
+              floodColor="#000"
+              floodOpacity="0.35"
+            />
           </filter>
         </defs>
 
-        {/* Linha 1 - AnatoKids */}
-        {/* “degrau” (profundidade) */}
         <text
           x="50%"
           y="135"
@@ -42,7 +45,6 @@ function TitleLogo() {
         >
           AnatoKids
         </text>
-        {/* contorno */}
         <text
           x="50%"
           y="125"
@@ -51,7 +53,6 @@ function TitleLogo() {
         >
           AnatoKids
         </text>
-        {/* preenchimento gradiente */}
         <text
           x="50%"
           y="125"
@@ -61,7 +62,6 @@ function TitleLogo() {
           AnatoKids
         </text>
 
-        {/* Linha 2 - Bilíngue */}
         <text
           x="50%"
           y="252"
@@ -95,17 +95,56 @@ function TitleLogo() {
 export default function Home() {
   const navigate = useNavigate();
   const game = useGame();
+
   const [openRules, setOpenRules] = useState(false);
+  const [openMascots, setOpenMascots] = useState(false);
+
+  const rulesVideoRef = useRef(null);
+
+  const rulesVideoSrc = useMemo(
+    () => `${import.meta.env.BASE_URL}videos/regras/regras.mp4`,
+    []
+  );
+
+  const mascotImageSrc = useMemo(
+    () => `${import.meta.env.BASE_URL}images/mascote.png`,
+    []
+  );
 
   function start() {
     game.reset();
     navigate("/nivel/basico");
   }
 
+  function closeRules() {
+    if (rulesVideoRef.current) {
+      try {
+        rulesVideoRef.current.pause();
+        rulesVideoRef.current.currentTime = 0;
+      } catch {
+        // ignore
+      }
+    }
+    setOpenRules(false);
+  }
+
+  function closeMascots() {
+    setOpenMascots(false);
+  }
+
   return (
     <section className="home">
       <div className="home__bg" />
       <div className="home__overlay" />
+
+      {/* BOTÃO NO CANTO SUPERIOR */}
+      <button
+        className="home__topButton"
+        onClick={() => setOpenMascots(true)}
+        type="button"
+      >
+        Ver mascotes
+      </button>
 
       <div className="home__content">
         <div className="home__center">
@@ -129,16 +168,17 @@ export default function Home() {
         </div>
       </div>
 
+      {/* MODAL DE REGRAS */}
       {openRules && (
         <div className="modal" role="dialog" aria-modal="true" aria-label="Regras do jogo">
-          <div className="modal__backdrop" onClick={() => setOpenRules(false)} />
+          <div className="modal__backdrop" onClick={closeRules} />
 
           <div className="modal__panel">
             <div className="modal__top">
               <div className="modal__title">Regras do jogo</div>
               <button
                 className="modal__close"
-                onClick={() => setOpenRules(false)}
+                onClick={closeRules}
                 aria-label="Fechar"
                 type="button"
               >
@@ -147,17 +187,60 @@ export default function Home() {
             </div>
 
             <video
+              key={openRules ? "open" : "closed"}
+              ref={rulesVideoRef}
               className="modal__video"
-              src="/videos/regras.mp4"
+              src={rulesVideoSrc}
               controls
               preload="metadata"
               autoPlay
+              muted
+              playsInline
             />
 
             <div className="modal__bottom">
               <button
                 className="home__btnYellow secondary"
-                onClick={() => setOpenRules(false)}
+                onClick={closeRules}
+                type="button"
+              >
+                FECHAR
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL DOS MASCOTES */}
+      {openMascots && (
+        <div className="modal" role="dialog" aria-modal="true" aria-label="Opções de mascote">
+          <div className="modal__backdrop" onClick={closeMascots} />
+
+          <div className="modal__panel modal__panel--image">
+            <div className="modal__top">
+              <div className="modal__title">Escolha o seu mascote!</div>
+              <button
+                className="modal__close"
+                onClick={closeMascots}
+                aria-label="Fechar"
+                type="button"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="modal__imageWrap">
+              <img
+                className="modal__image"
+                src={mascotImageSrc}
+                alt="Opções de mascote do jogo para escolha dos alunos"
+              />
+            </div>
+
+            <div className="modal__bottom">
+              <button
+                className="home__btnYellow secondary"
+                onClick={closeMascots}
                 type="button"
               >
                 FECHAR

@@ -1,9 +1,32 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* ========================= */
+/* FONTE LIBRAS 2020 */
+/* ========================= */
+
+@font-face {
+  font-family: 'LibrasManual';
+  src: url("/fonts/Libras2020-Regular.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
+
+
+/* ========================= */
+/* ROOT PADRÃO VITE */
+/* ========================= */
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  text-align: initial;
+}
+
+
+/* ========================= */
+/* LOGO */
+/* ========================= */
 
 .logo {
   height: 6em;
@@ -11,12 +34,19 @@
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
+
+
+/* ========================= */
+/* ANIMAÇÃO */
+/* ========================= */
 
 @keyframes logo-spin {
   from {
@@ -33,10 +63,32 @@
   }
 }
 
+
+/* ========================= */
+/* CARD */
+/* ========================= */
+
 .card {
   padding: 2em;
 }
 
 .read-the-docs {
   color: #888;
+}
+
+
+/* ========================= */
+/* CLASSE PARA DATILOLOGIA */
+/* ========================= */
+
+.dati {
+  font-family: "LibrasManual";
+  font-size: 2.6em;
+  letter-spacing: 0.08em;
+}
+.optionBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 50px;
 }
