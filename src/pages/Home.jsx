@@ -97,17 +97,24 @@ export default function Home() {
   const game = useGame();
 
   const [openRules, setOpenRules] = useState(false);
+  const [openGlossary, setOpenGlossary] = useState(false);
   const [openMascots, setOpenMascots] = useState(false);
 
   const rulesVideoRef = useRef(null);
+  const glossaryVideoRef = useRef(null);
 
   const rulesVideoSrc = useMemo(
     () => `${import.meta.env.BASE_URL}videos/regras/regras.mp4`,
     []
   );
 
+  const glossaryVideoSrc = useMemo(
+    () => `${import.meta.env.BASE_URL}videos/sinalario/sinalario.mp4`,
+    []
+  );
+
   const mascotImageSrc = useMemo(
-    () => `${import.meta.env.BASE_URL}images/mascote.png`,
+    () => `${import.meta.env.BASE_URL}images/mascotes-opcoes.png`,
     []
   );
 
@@ -128,6 +135,18 @@ export default function Home() {
     setOpenRules(false);
   }
 
+  function closeGlossary() {
+    if (glossaryVideoRef.current) {
+      try {
+        glossaryVideoRef.current.pause();
+        glossaryVideoRef.current.currentTime = 0;
+      } catch {
+        // ignore
+      }
+    }
+    setOpenGlossary(false);
+  }
+
   function closeMascots() {
     setOpenMascots(false);
   }
@@ -137,7 +156,6 @@ export default function Home() {
       <div className="home__bg" />
       <div className="home__overlay" />
 
-      {/* BOTÃO NO CANTO SUPERIOR */}
       <button
         className="home__topButton"
         onClick={() => setOpenMascots(true)}
@@ -161,6 +179,14 @@ export default function Home() {
               REGRAS
             </button>
 
+            <button
+              className="home__btnYellow secondary"
+              onClick={() => setOpenGlossary(true)}
+              type="button"
+            >
+              SINALÁRIO
+            </button>
+
             <button className="home__btnYellow" onClick={start} type="button">
               INICIAR MISSÃO! <span aria-hidden="true">🚀</span>
             </button>
@@ -168,7 +194,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* MODAL DE REGRAS */}
       {openRules && (
         <div className="modal" role="dialog" aria-modal="true" aria-label="Regras do jogo">
           <div className="modal__backdrop" onClick={closeRules} />
@@ -187,7 +212,7 @@ export default function Home() {
             </div>
 
             <video
-              key={openRules ? "open" : "closed"}
+              key={openRules ? "rules-open" : "rules-closed"}
               ref={rulesVideoRef}
               className="modal__video"
               src={rulesVideoSrc}
@@ -211,14 +236,55 @@ export default function Home() {
         </div>
       )}
 
-      {/* MODAL DOS MASCOTES */}
+      {openGlossary && (
+        <div className="modal" role="dialog" aria-modal="true" aria-label="Sinalário">
+          <div className="modal__backdrop" onClick={closeGlossary} />
+
+          <div className="modal__panel">
+            <div className="modal__top">
+              <div className="modal__title">Sinalário</div>
+              <button
+                className="modal__close"
+                onClick={closeGlossary}
+                aria-label="Fechar"
+                type="button"
+              >
+                ✕
+              </button>
+            </div>
+
+            <video
+              key={openGlossary ? "glossary-open" : "glossary-closed"}
+              ref={glossaryVideoRef}
+              className="modal__video"
+              src={glossaryVideoSrc}
+              controls
+              preload="metadata"
+              autoPlay
+              muted
+              playsInline
+            />
+
+            <div className="modal__bottom">
+              <button
+                className="home__btnYellow secondary"
+                onClick={closeGlossary}
+                type="button"
+              >
+                FECHAR
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {openMascots && (
         <div className="modal" role="dialog" aria-modal="true" aria-label="Opções de mascote">
           <div className="modal__backdrop" onClick={closeMascots} />
 
           <div className="modal__panel modal__panel--image">
             <div className="modal__top">
-              <div className="modal__title">Escolha o seu mascote!</div>
+              <div className="modal__title">Escolha do mascote</div>
               <button
                 className="modal__close"
                 onClick={closeMascots}
@@ -252,4 +318,3 @@ export default function Home() {
     </section>
   );
 }
-

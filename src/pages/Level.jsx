@@ -84,7 +84,7 @@ export default function Level() {
           <div className="hudOverlay">
             <div className="hudMain">
               <div className="hudMain__left">
-                <h1 className="hudTitle">Nível {levelLabel}</h1>
+                <h1 className="hudTitle">{levelLabel}</h1>
 
                 <div className="hudProgress">
                   <div className="hudProgress__track">
@@ -133,7 +133,7 @@ export default function Level() {
         <div className="hudOverlay">
   <div className="hudBar">
     <div className="hudBar__left">
-      <h1 className="hudTitle">Nível {levelLabel}</h1>
+      <h1 className="hudTitle">{levelLabel}</h1>
     </div>
 
     <div className="hudBar__center">

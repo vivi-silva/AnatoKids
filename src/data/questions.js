@@ -1,9 +1,9 @@
 // questions.js
 
 export const LEVELS = [
-  { id: "basico", label: "Básico" },
-  { id: "intermediario", label: "Intermediário" },
-  { id: "avancado", label: "Avançado" },
+  { id: "basico", label: "Fase 1" },
+  { id: "intermediario", label: "Fase 2" },
+  { id: "avancado", label: "Fase 3" },
 ];
 
 // Remove acentos e deixa em caixa alta (melhor compatibilidade com fontes de datilologia)
@@ -27,7 +27,7 @@ export const QUESTIONS = {
     {
       id: "boca",
       videoUrl: "videos/basico/boca.mp4",
-      promptPT: "Por onde entra os alimentos que comemos?",
+      promptPT: "Por onde entram os alimentos que comemos?",
       options: [
         opt("bocaA", "Boca", "images/opcoes/boca.png", true),
         opt("bocaB", "Nariz", "images/opcoes/nariz.png", false),
@@ -47,7 +47,7 @@ export const QUESTIONS = {
     {
       id: "nariz",
       videoUrl: "videos/basico/nariz.mp4",
-      promptPT: "Com qual órgão sentimos cheiro?",
+      promptPT: "Com qual parte do corpo sentimos cheiro?",
       options: [
         opt("narizA", "Olhos", "images/opcoes/olhos.png", false),
         opt("narizB", "Orelha", "images/opcoes/orelha.png", false),
@@ -84,39 +84,79 @@ export const QUESTIONS = {
         opt("orelhaC", "Olhos", "images/opcoes/olhos.png", false),
       ],
     },
+    {
+      id: "mao",
+      videoUrl: "videos/basico/mao.mp4",
+      promptPT: "Qual parte do corpo usamos para conversar em Libras?",
+      options: [
+        opt("maoA", "Mãos", "images/opcoes/mao.png", true),
+        opt("maoB", "Braços", "images/opcoes/bracos.png", false),
+        opt("maoC", "Olhos", "images/opcoes/olhos.png", false),
+      ],
+    },
+    {
+      id: "pe",
+      videoUrl: "videos/basico/pe.mp4",
+      promptPT: "Em qual parte do corpo usamos tênis?",
+      options: [
+        opt("peA", "Pernas", "images/opcoes/pernas.png", false),
+        opt("peB", "Pés", "images/opcoes/pe.png", true),
+        opt("peC", "Nariz", "images/opcoes/nariz.png", false),
+      ],
+    },
+    {
+      id: "dente",
+      videoUrl: "videos/basico/dente.mp4",
+      promptPT: "Qual parte do corpo usamos para mastigar os alimentos?",
+      options: [
+        opt("denteA", "Mãos", "images/opcoes/orelha.png", false),
+        opt("denteB", "Olhos", "images/opcoes/olhos.png", false),
+        opt("denteC", "Dentes", "images/opcoes/dente.png", true),
+      ],
+    },
+    {
+      id: "cabelo",
+      videoUrl: "videos/basico/cabelo.mp4",
+      promptPT: "O que temos na cabeça que pode ser curto ou comprido?",
+      options: [
+        opt("cabeloA", "Cabelo", "images/opcoes/cabelo.png", true),
+        opt("cabeloB", "Braços", "images/opcoes/bracos.png", false),
+        opt("cabeloC", "Olhos", "images/opcoes/olhos.png", false),
+      ],
+    },
   ],
 
   // ===== NÍVEL INTERMEDIÁRIO =====
   intermediario: [
     {
-      id: "bexiga",
-      videoUrl: "videos/intermediario/bexiga.mp4",
+      id: "sangue",
+      videoUrl: "videos/intermediario/sangue.mp4",
       promptPT:
-        "Qual parte do corpo onde fica guardado o xixi antes de ir ao banheiro?",
+        "Qual líquido sai do nosso corpo se fizermos um corte ou cairmos?",
       options: [
-        opt("bexigaA", "Ossos", "images/opcoes/ossos.png", false),
-        opt("bexigaB", "Bexiga", "images/opcoes/bexiga.png", true),
-        opt("bexigaC", "Nariz", "images/opcoes/nariz.png", false),
+        opt("sangueA", "Ossos", "images/opcoes/ossos.png", false),
+        opt("sangueB", "Sangue", "images/opcoes/sangue.png", true),
+        opt("sangueC", "Cérebro", "images/opcoes/cerebro.png", false),
       ],
     },
     {
       id: "cerebro",
       videoUrl: "videos/intermediario/cerebro.mp4",
-      promptPT: "Qual parte do corpo é responsável pelo nosso pensamento?",
+      promptPT: "Qual parte é responsável pelo controle das ações de todo o corpo?",
       options: [
-        opt("cerebroA", "Coração", "images/opcoes/coracao.png", false),
+        opt("cerebroA", "Baço", "images/opcoes/baco.png", false),
         opt("cerebroB", "Ossos", "images/opcoes/ossos.png", false),
         opt("cerebroC", "Cérebro", "images/opcoes/cerebro.png", true),
       ],
     },
     {
-      id: "coracao",
-      videoUrl: "videos/intermediario/coracao.mp4",
-      promptPT: "Qual parte do corpo sentimos bater?",
+      id: "figado",
+      videoUrl: "videos/intermediario/figado.mp4",
+      promptPT: "Qual órgão ajuda a processar a gordura do corpo?",
       options: [
-        opt("coracaoA", "Braços", "images/opcoes/bracos.png", false),
-        opt("coracaoB", "Coração", "images/opcoes/coracao.png", true),
-        opt("coracaoC", "Bexiga", "images/opcoes/bexiga.png", false),
+        opt("figadoA", "Baço", "images/opcoes/baco.png", false),
+        opt("figadoB", "Fígado", "images/opcoes/figado.png", true),
+        opt("figadoC", "Célula", "images/opcoes/celulas.png", false),
       ],
     },
     {
@@ -125,29 +165,69 @@ export const QUESTIONS = {
       promptPT: "O que fica dentro do corpo e deixa ele firme, sem ficar mole?",
       options: [
         opt("ossosA", "Ossos", "images/opcoes/ossos.png", true),
-        opt("ossosB", "Pulmão", "images/opcoes/pulmao.png", false),
-        opt("ossosC", "Olhos", "images/opcoes/olhos.png", false),
+        opt("ossosB", "Intestino", "images/opcoes/intestino.png", false),
+        opt("ossosC", "Mandíbula", "images/opcoes/mandibula.png", false),
       ],
     },
     {
-      id: "ovarios",
-      videoUrl: "videos/intermediario/ovarios.mp4",
+      id: "utero",
+      videoUrl: "videos/intermediario/utero.mp4",
       promptPT:
-        "Qual parte do corpo da mulher guarda os óvulos, que servem para formar bebês?",
+        "Em qual parte do corpo da mulher o bebê cresce durante a gestação?",
       options: [
-        opt("ovariosA", "Intestino", "images/opcoes/intestino.png", false),
-        opt("ovariosB", "Ovários", "images/opcoes/ovarios.png", true),
-        opt("ovariosC", "Bexiga", "images/opcoes/bexiga.png", false),
+        opt("uteroA", "Intestino", "images/opcoes/intestino.png", false),
+        opt("uteroB", "Útero", "images/opcoes/utero.png", true),
+        opt("uteroC", "Veias", "images/opcoes/veias.png", false),
       ],
     },
     {
-      id: "pulmao",
-      videoUrl: "videos/intermediario/pulmao.mp4",
-      promptPT: "Qual órgão do corpo que é responsável pela respiração?",
+      id: "baco",
+      videoUrl: "videos/intermediario/baco.mp4",
+      promptPT: "Qual órgão ajuda o corpo a limpar o sangue e combater doenças?",
       options: [
-        opt("pulmaoA", "Útero", "images/opcoes/utero.png", false),
-        opt("pulmaoB", "Bexiga", "images/opcoes/bexiga.png", false),
-        opt("pulmaoC", "Pulmão", "images/opcoes/pulmao.png", true),
+        opt("bacoA", "Útero", "images/opcoes/utero.png", false),
+        opt("bacoB", "Célula", "images/opcoes/celulas.png", false),
+        opt("bacoC", "Baço", "images/opcoes/baco.png", true),
+      ],
+    },
+    {
+      id: "celula",
+      videoUrl: "videos/intermediario/celula.mp4",
+      promptPT: "O que todos nós temos dentro do corpo, mas só podemos ver com microscópio?",
+      options: [
+        opt("celulaA", "Veias", "images/opcoes/utero.png", false),
+        opt("celulaB", "Célula", "images/opcoes/celulas.png", true),
+        opt("celulaC", "Baço", "images/opcoes/baco.png", false),
+      ],
+    },
+    {
+      id: "veias",
+      videoUrl: "videos/intermediario/veias.mp4",
+      promptPT: "Onde o sangue circula por todo o corpo?",
+      options: [
+        opt("veiasA", "Veias", "images/opcoes/veias.png", true),
+        opt("veiasB", "Célula", "images/opcoes/celulas.png", false),
+        opt("veiasC", "Baço", "images/opcoes/baco.png", false),
+      ],
+    },
+    {
+      id: "mandibula",
+      videoUrl: "videos/intermediario/mandibula.mp4",
+      promptPT: "Quando bocejamos qual parte do rosto se movimenta?",
+      options: [
+        opt("mandibulaA", "Ossos", "images/opcoes/ossos.png", false),
+        opt("mandibulaB", "Fígado", "images/opcoes/figado.png", false),
+        opt("mandibulaC", "Mandíbula", "images/opcoes/mandibula.png", true),
+      ],
+    },
+    {
+      id: "intestino",
+      videoUrl: "videos/intermediario/intestino.mp4",
+      promptPT: "Por onde a comida passa depois do estômago até se transformar em fezes?",
+      options: [
+        opt("intestinoA", "Intestino", "images/opcoes/intestino.png", true),
+        opt("intestinoB", "Célula", "images/opcoes/celulas.png", false),
+        opt("intestinoC", "Baço", "images/opcoes/baco.png", false),
       ],
     },
   ],
@@ -155,87 +235,107 @@ export const QUESTIONS = {
   // ===== NÍVEL AVANÇADO =====
   avancado: [
     {
-      id: "baco",
-      videoUrl: "videos/avancado/baco.mp4",
-      promptPT: "Qual órgão ajuda o corpo a limpar o sangue e evitar doenças?",
+      id: "bexiga",
+      videoUrl: "videos/avancado/bexiga.mp4",
+      promptPT: "Onde o xixi fica guardado no nosso corpo até termos vontade de ir ao banheiro?",
       options: [
-        opt("bacoA", "Ovários", "images/opcoes/ovarios.png", false),
-        opt("bacoB", "Baço", "images/opcoes/baco.png", true),
-        opt("bacoC", "Bexiga", "images/opcoes/bexiga.png", false),
+        opt("bexigaA", "Ovários", "images/opcoes/ovarios.png", false),
+        opt("bexigaB", "Bexiga", "images/opcoes/bexiga.png", true),
+        opt("bexigaC", "Rins", "images/opcoes/rins.png", false),
       ],
     },
     {
       id: "testiculos",
       videoUrl: "videos/avancado/testiculos.mp4",
       promptPT:
-        "Qual parte do corpo do homem produz os espermatozoides para formar bebês?",
+        "Qual parte do corpo do homem produz os espermatozoides?",
       options: [
         opt("testiculosA", "Testículos", "images/opcoes/testiculos.png", true),
         opt("testiculosB", "Rins", "images/opcoes/rins.png", false),
-        opt("testiculosC", "Fígado", "images/opcoes/figado.png", false),
+        opt("testiculosC", "Pulmão", "images/opcoes/pulmao.png", false),
       ],
     },
     {
-      id: "celula",
-      videoUrl: "videos/avancado/celula.mp4",
+      id: "coluna",
+      videoUrl: "videos/avancado/coluna.mp4",
       promptPT:
-        "O que é que todos nós temos dentro do corpo, mas que só pode ser visto com microscópio?",
+        "Qual parte do corpo é responsável por manter o corpo firme e de pé?",
       options: [
-        opt("celulaA", "Pulmão", "images/opcoes/pulmao.png", false),
-        opt("celulaB", "Útero", "images/opcoes/utero.png", false),
-        opt("celulaC", "Células", "images/opcoes/celulas.png", true),
+        opt("colunaA", "Pulmão", "images/opcoes/pulmao.png", false),
+        opt("colunaB", "Útero", "images/opcoes/utero.png", false),
+        opt("colunaC", "Coluna", "images/opcoes/coluna.png", true),
       ],
     },
     {
-      id: "figado",
-      videoUrl: "videos/avancado/figado.mp4",
-      promptPT: "Qual órgão ajuda a limpar a gordura do sangue?",
+      id: "coracao",
+      videoUrl: "videos/avancado/coracao.mp4",
+      promptPT: "Qual parte do corpo você sente bater?",
       options: [
-        opt("figadoA", "Fígado", "images/opcoes/figado.png", true),
-        opt("figadoB", "Orelha", "images/opcoes/orelha.png", false),
-        opt("figadoC", "Rins", "images/opcoes/rins.png", false),
+        opt("coracaoA", "Coração", "images/opcoes/coracao.png", true),
+        opt("coracaoB", "Músculos", "images/opcoes/musculo.png", false),
+        opt("coracaoC", "Rins", "images/opcoes/rins.png", false),
       ],
     },
     {
-      id: "intestino",
-      videoUrl: "videos/avancado/intestino.mp4",
+      id: "costelas",
+      videoUrl: "videos/avancado/costelas.mp4",
       promptPT:
-        "Por onde a comida passa depois do estômago, para transformar em cocô?",
+        "Com qual parte do corpo protege os órgãos que ficam acima da cintura?",
       options: [
-        opt("intestinoA", "Rins", "images/opcoes/rins.png", false),
-        opt("intestinoB", "Intestino", "images/opcoes/intestino.png", true),
-        opt("intestinoC", "Mandíbula", "images/opcoes/mandibula.png", false),
+        opt("costelasA", "Rins", "images/opcoes/rins.png", false),
+        opt("costelasB", "Costelas", "images/opcoes/costelas.png", true),
+        opt("costelasC", "Ovários", "images/opcoes/ovarios.png", false),
       ],
     },
     {
-      id: "mandibula",
-      videoUrl: "videos/avancado/mandibula.mp4",
-      promptPT: "Qual parte do rosto que se mexe quando a gente mastiga?",
+      id: "musculo",
+      videoUrl: "videos/avancado/musculo.mp4",
+      promptPT: "Qual parte do corpo se desenvolve e fica firme quando fazemos força ou pegamos muito peso?",
       options: [
-        opt("mandibulaA", "Mandíbula", "images/opcoes/mandibula.png", true),
-        opt("mandibulaB", "Baço", "images/opcoes/baco.png", false),
-        opt("mandibulaC", "Orelha", "images/opcoes/orelha.png", false),
+        opt("musculoA", "Músculos", "images/opcoes/musculo.png", true),
+        opt("musculoB", "Pescoço", "images/opcoes/pescoco.png", false),
+        opt("musculoC", "Rins", "images/opcoes/rins.png", false),
       ],
     },
     {
-      id: "rim",
-      videoUrl: "videos/avancado/rim.mp4",
-      promptPT: "Qual órgão do corpo que fica na costa e que são dois iguais?",
+      id: "rins",
+      videoUrl: "videos/avancado/rins.mp4",
+      promptPT: "Quais são os dois órgãos do corpo que são iguais e que ficam nas costas?",
       options: [
-        opt("rimA", "Pulmão", "images/opcoes/pulmao.png", false),
-        opt("rimB", "Olhos", "images/opcoes/olhos.png", false),
-        opt("rimC", "Rins", "images/opcoes/rins.png", true),
+        opt("rinsA", "Pulmão", "images/opcoes/pulmao.png", false),
+        opt("rinsB", "Ovários", "images/opcoes/ovarios.png", false),
+        opt("rinsC", "Rins", "images/opcoes/rins.png", true),
       ],
     },
     {
-      id: "utero",
-      videoUrl: "videos/avancado/utero.mp4",
+      id: "ovarios",
+      videoUrl: "videos/avancado/ovarios.mp4",
       promptPT:
-        "Qual parte do corpo da mulher onde o bebê cresce quando está na barriga da mãe?",
+        "Qual parte do corpo da mulher guarda os óvulos?",
       options: [
-        opt("uteroA", "Útero", "images/opcoes/utero.png", true),
-        opt("uteroB", "Baço", "images/opcoes/baco.png", false),
-        opt("uteroC", "Fígado", "images/opcoes/figado.png", false),
+        opt("ovariosA", "Ovários", "images/opcoes/ovarios.png", true),
+        opt("ovariosB", "Pescoço", "images/opcoes/pescoco.png", false),
+        opt("ovariosC", "Testículos", "images/opcoes/testiculos.png", false),
+      ],
+    },
+    {
+      id: "pescoco",
+      videoUrl: "videos/avancado/pescoco.mp4",
+      promptPT: "Qual parte do corpo liga a cabeça ao resto do corpo?",
+      options: [
+        opt("pescocoA", "Útero", "images/opcoes/utero.png", false),
+        opt("pescocoB", "Costelas", "images/opcoes/costelas.png", false),
+        opt("pescocoC", "Pescoço", "images/opcoes/pescoco.png", true),
+      ],
+    },
+    {
+      id: "pulmao",
+      videoUrl: "videos/avancado/pulmao.mp4",
+      promptPT: "Qual órgão é responsável pela respiração?",
+      options: [
+        opt("pulmaoA", "Bexiga", "images/opcoes/bexiga.png", false),
+        opt("pulmaoB", "Pulmão", "images/opcoes/pulmao.png", true),
+        opt("pulmaoC", "Rins", "images/opcoes/rins.png", false),
       ],
     },
   ],
