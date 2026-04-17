@@ -114,7 +114,7 @@ export default function Home() {
   );
 
   const mascotImageSrc = useMemo(
-    () => `${import.meta.env.BASE_URL}images/mascotes-opcoes.png`,
+    () => `${import.meta.env.BASE_URL}images/mascote.png`,
     []
   );
 
