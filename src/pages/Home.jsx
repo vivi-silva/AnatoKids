@@ -284,7 +284,7 @@ export default function Home() {
 
           <div className="modal__panel modal__panel--image">
             <div className="modal__top">
-              <div className="modal__title">Escolha do mascote</div>
+              <div className="modal__title">Mascote escolhido!</div>
               <button
                 className="modal__close"
                 onClick={closeMascots}

@@ -368,6 +368,7 @@ textarea {
 }
 
 /* ================================
+   /* ================================
    RESPOSTAS
 ================================ */
 .answerGrid {
@@ -386,48 +387,80 @@ textarea {
   justify-content: space-between;
 }
 
-.optionBtn {
+.optionBtn,
+.optionBtn--vertical {
   width: 100%;
-  min-height: 118px;
+  min-height: 190px;
+  padding: 26px 30px;
+  border-radius: 18px;
+  text-align: left;
+
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+}
+
+/* estrutura geral do card */
+.optionBtn__content {
+  position: relative;
+  width: 100%;
+  min-height: 130px;
 
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: center;
+  justify-content: flex-start;
 
-  gap: 14px;
-  padding: 22px 24px;
-  border-radius: 18px;
-  text-align: left;
+  /* reserva espaço para a imagem à direita */
+  padding-right: 180px;
 }
 
-.optionBtn,
-.optionBtn--vertical {
-  min-height: 180px;
-  padding: 28px 30px;
+/* letra A/B/C no canto superior */
+.optionBtn__label {
+  font-size: 2.0rem;
+  font-weight: 1000;
+  line-height: 1;
+  color: var(--text);
+  margin: 0 0 12px 0;
+}
+
+/* bloco de textos */
+.optionBtn__texts {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  gap: 12px;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .optionBtn__pt {
   font-size: 1.5rem;
   font-weight: 900;
   line-height: 1.2;
+  max-width: 100%;
 }
 
 .optionBtn__dati {
-  font-size: 2.4rem;
+  font-size: 2.2rem;
   line-height: 1.1;
+  max-width: 100%;
+
+  /* permite recuar e quebrar melhor sem invadir a imagem */
+  white-space: normal;
+  word-break: break-word;
 }
 
-.optionBtn__content {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 28px;
-}
-
+/* imagem fixa à direita */
 .optionBtn__image {
-  width: 130px;
-  height: 130px;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+
+  width: 140px;
+  height: 140px;
   object-fit: contain;
   flex-shrink: 0;
   border-radius: 18px;
@@ -435,12 +468,6 @@ textarea {
   padding: 10px;
 }
 
-.optionBtn__texts {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
-}
 /* ================================
    AÇÕES
 ================================ */
@@ -450,7 +477,6 @@ textarea {
   justify-content: center;
   flex-wrap: wrap;
 }
-
 /* ================================
    OVERLAY FEEDBACK
 ================================ */

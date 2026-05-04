@@ -185,35 +185,39 @@ export default function Level() {
             {/* Respostas em coluna */}
             <div className="quizLayout__answers">
               <div className="answerGrid answerGrid--vertical">
-                {current.options.map((opt) => {
-                  const pt = opt.pt ?? opt.text ?? "";
-                  const dati = opt.dati ?? pt;
+                {current.options.map((opt, optionIndex) => {
+  const pt = opt.pt ?? opt.text ?? "";
+  const dati = opt.dati ?? pt;
+  const optionLetter = String.fromCharCode(65 + optionIndex); // A, B, C...
 
-                  return (
-                    <button
-  key={opt.id}
-  className="btn btn-blue optionBtn optionBtn--vertical"
-  onClick={() => handleAnswer(opt)}
-  disabled={locked}
-  style={{ opacity: locked ? 0.78 : 1 }}
->
-  <div className="optionBtn__content">
-    {opt.image && (
-      <img
-        className="optionBtn__image"
-        src={`${import.meta.env.BASE_URL}${opt.image}`}
-        alt={pt}
-      />
-    )}
+  return (
+    <button
+      key={opt.id}
+      className="btn btn-blue optionBtn optionBtn--vertical"
+      onClick={() => handleAnswer(opt)}
+      disabled={locked}
+      style={{ opacity: locked ? 0.78 : 1 }}
+    >
+      <div className="optionBtn__content">
+        <span className="optionBtn__label">{optionLetter})</span>
 
-    <div className="optionBtn__texts">
-      <span className="optionBtn__pt">{pt}</span>
-      <span className="optionBtn__dati dati">{dati}</span>
-    </div>
-  </div>
-</button>
-                  );
-                })}
+        <div className="optionBtn__texts">
+          <span className="optionBtn__pt">{pt}</span>
+          <span className="optionBtn__dati dati">{dati}</span>
+        </div>
+
+        {opt.image && (
+          <img
+            className="optionBtn__image"
+            src={`${import.meta.env.BASE_URL}${opt.image}`}
+            alt={pt}
+          />
+        )}
+      </div>
+    </button>
+  );
+})}
+                  
               </div>
             </div>
           </div>
