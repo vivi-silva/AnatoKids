@@ -97,6 +97,8 @@ export default function Home() {
   const game = useGame();
 
   const [openRules, setOpenRules] = useState(false);
+  const [rulesScreen, setRulesScreen] = useState("video"); // "video" | "text"
+
   const [openGlossary, setOpenGlossary] = useState(false);
   const [openMascots, setOpenMascots] = useState(false);
 
@@ -123,6 +125,11 @@ export default function Home() {
     navigate("/nivel/basico");
   }
 
+  function openRulesModal() {
+    setRulesScreen("video");
+    setOpenRules(true);
+  }
+
   function closeRules() {
     if (rulesVideoRef.current) {
       try {
@@ -132,7 +139,25 @@ export default function Home() {
         // ignore
       }
     }
+
+    setRulesScreen("video");
     setOpenRules(false);
+  }
+
+  function showRulesVideo() {
+    setRulesScreen("video");
+  }
+
+  function showRulesText() {
+    if (rulesVideoRef.current) {
+      try {
+        rulesVideoRef.current.pause();
+      } catch {
+        // ignore
+      }
+    }
+
+    setRulesScreen("text");
   }
 
   function closeGlossary() {
@@ -173,7 +198,7 @@ export default function Home() {
           <div className="home__buttons">
             <button
               className="home__btnYellow secondary"
-              onClick={() => setOpenRules(true)}
+              onClick={openRulesModal}
               type="button"
             >
               REGRAS
@@ -195,12 +220,18 @@ export default function Home() {
       </div>
 
       {openRules && (
-        <div className="modal" role="dialog" aria-modal="true" aria-label="Regras do jogo">
+        <div
+          className="modal"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Regras do jogo"
+        >
           <div className="modal__backdrop" onClick={closeRules} />
 
           <div className="modal__panel">
             <div className="modal__top">
               <div className="modal__title">Regras do jogo</div>
+
               <button
                 className="modal__close"
                 onClick={closeRules}
@@ -211,17 +242,98 @@ export default function Home() {
               </button>
             </div>
 
-            <video
-              key={openRules ? "rules-open" : "rules-closed"}
-              ref={rulesVideoRef}
-              className="modal__video"
-              src={rulesVideoSrc}
-              controls
-              preload="metadata"
-              autoPlay
-              muted
-              playsInline
-            />
+            <div className="modal__tabs">
+              <button
+                className={`modal__tab ${
+                  rulesScreen === "video" ? "is-active" : ""
+                }`}
+                onClick={showRulesVideo}
+                type="button"
+              >
+                Libras
+              </button>
+
+              <button
+                className={`modal__tab ${
+                  rulesScreen === "text" ? "is-active" : ""
+                }`}
+                onClick={showRulesText}
+                type="button"
+              >
+                Português
+              </button>
+            </div>
+
+            {rulesScreen === "video" ? (
+              <video
+                key={openRules ? "rules-open" : "rules-closed"}
+                ref={rulesVideoRef}
+                className="modal__video"
+                src={rulesVideoSrc}
+                controls
+                preload="metadata"
+                autoPlay
+                muted
+                playsInline
+              />
+            ) : (
+             <div className="modal__rulesText">
+  <h3>REGRAS DO JOGO</h3>
+
+  <h4>Como funciona este jogo?</h4>
+
+  <p>
+    Este jogo tem como objetivo ajudar vocês, alunos, a aprender e melhorar a
+    compreensão sobre o corpo humano — seus significados, sinais em Libras e os
+    nomes de cada parte do corpo.
+  </p>
+
+  <p>
+    Além disso, o jogo contribui para que vocês compreendam os nomes dos órgãos
+    localizados na cabeça, no interior do corpo e também na parte externa,
+    envolvendo conteúdos gerais de anatomia humana.
+  </p>
+
+  <p>O jogo é composto por 30 perguntas, divididas em 3 fases:</p>
+
+  <ul>
+    <li>Fase 1</li>
+    <li>Fase 2</li>
+    <li>Fase 3</li>
+  </ul>
+
+  <p>
+    Cada fase possui 10 perguntas, com alternativas A, B e C, nas quais você
+    deverá clicar na resposta correta.
+  </p>
+
+  <p>
+    Se errar, não tem problema! Você poderá tentar novamente até acertar.
+  </p>
+
+  <p>
+    O principal objetivo do jogo é aprender enquanto joga.
+  </p>
+
+  <p>Como jogar é muito simples: basta observar, responder e aprender com:</p>
+
+  <ul>
+    <li>os sinais em Libras</li>
+    <li>os nomes em português</li>
+    <li>os significados</li>
+    <li>e as imagens</li>
+  </ul>
+
+  <p>
+    Tudo isso vai ajudar na memorização e na compreensão do conteúdo.
+  </p>
+
+  <p>
+    Esse aprendizado é muito importante para que você conheça melhor o seu
+    próprio corpo.
+  </p>
+</div>
+            )}
 
             <div className="modal__bottom">
               <button
