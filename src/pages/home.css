@@ -375,3 +375,50 @@
   margin: 8px 0 16px;
   padding-left: 26px;
 }
+.modal__panel--levels {
+  width: min(620px, 92vw);
+}
+
+.levelSelect {
+  display: grid;
+  gap: 16px;
+  width: 100%;
+  margin: 12px 0;
+}
+
+.levelSelect__btn {
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  border-radius: 22px;
+  padding: 20px 22px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+
+  background: rgba(90, 168, 255, 0.20);
+  border: 2px solid rgba(90, 168, 255, 0.42);
+  color: #0b1630;
+
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.14);
+  transition: transform 0.15s ease, filter 0.15s ease, box-shadow 0.15s ease;
+}
+
+.levelSelect__btn:hover {
+  transform: translateY(-2px) scale(1.01);
+  filter: brightness(1.04);
+  box-shadow: 0 16px 38px rgba(0, 0, 0, 0.18);
+}
+
+.levelSelect__title {
+  font-size: 1.35rem;
+  font-weight: 1000;
+}
+
+.levelSelect__text {
+  font-size: 0.98rem;
+  font-weight: 800;
+  color: rgba(11, 22, 48, 0.72);
+}

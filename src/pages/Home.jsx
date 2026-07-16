@@ -97,10 +97,11 @@ export default function Home() {
   const game = useGame();
 
   const [openRules, setOpenRules] = useState(false);
-  const [rulesScreen, setRulesScreen] = useState("video"); // "video" | "text"
+  const [rulesScreen, setRulesScreen] = useState("video");
 
   const [openGlossary, setOpenGlossary] = useState(false);
   const [openMascots, setOpenMascots] = useState(false);
+  const [openLevelSelect, setOpenLevelSelect] = useState(false);
 
   const rulesVideoRef = useRef(null);
   const glossaryVideoRef = useRef(null);
@@ -120,9 +121,10 @@ export default function Home() {
     []
   );
 
-  function start() {
+  function start(levelId) {
     game.reset();
-    navigate("/nivel/basico");
+    setOpenLevelSelect(false);
+    navigate(`/nivel/${levelId}`);
   }
 
   function openRulesModal() {
@@ -169,6 +171,7 @@ export default function Home() {
         // ignore
       }
     }
+
     setOpenGlossary(false);
   }
 
@@ -212,7 +215,11 @@ export default function Home() {
               SINALÁRIO
             </button>
 
-            <button className="home__btnYellow" onClick={start} type="button">
+            <button
+              className="home__btnYellow"
+              onClick={() => setOpenLevelSelect(true)}
+              type="button"
+            >
               INICIAR MISSÃO! <span aria-hidden="true">🚀</span>
             </button>
           </div>
@@ -277,62 +284,64 @@ export default function Home() {
                 playsInline
               />
             ) : (
-             <div className="modal__rulesText">
-  <h3>REGRAS DO JOGO</h3>
+              <div className="modal__rulesText">
+                <h3>REGRAS DO JOGO</h3>
 
-  <h4>Como funciona este jogo?</h4>
+                <h4>Como funciona este jogo?</h4>
 
-  <p>
-    Este jogo tem como objetivo ajudar vocês, alunos, a aprender e melhorar a
-    compreensão sobre o corpo humano — seus significados, sinais em Libras e os
-    nomes de cada parte do corpo.
-  </p>
+                <p>
+                  Este jogo tem como objetivo ajudar vocês, alunos, a aprender e
+                  melhorar a compreensão sobre o corpo humano — seus significados,
+                  sinais em Libras e os nomes de cada parte do corpo.
+                </p>
 
-  <p>
-    Além disso, o jogo contribui para que vocês compreendam os nomes dos órgãos
-    localizados na cabeça, no interior do corpo e também na parte externa,
-    envolvendo conteúdos gerais de anatomia humana.
-  </p>
+                <p>
+                  Além disso, o jogo contribui para que vocês compreendam os nomes
+                  dos órgãos localizados na cabeça, no interior do corpo e também
+                  na parte externa, envolvendo conteúdos gerais de anatomia humana.
+                </p>
 
-  <p>O jogo é composto por 30 perguntas, divididas em 3 fases:</p>
+                <p>O jogo é composto por 30 perguntas, divididas em 3 fases:</p>
 
-  <ul>
-    <li>Fase 1</li>
-    <li>Fase 2</li>
-    <li>Fase 3</li>
-  </ul>
+                <ul>
+                  <li>Fase 1</li>
+                  <li>Fase 2</li>
+                  <li>Fase 3</li>
+                </ul>
 
-  <p>
-    Cada fase possui 10 perguntas, com alternativas A, B e C, nas quais você
-    deverá clicar na resposta correta.
-  </p>
+                <p>
+                  Cada fase possui 10 perguntas, com alternativas A, B e C, nas
+                  quais você deverá clicar na resposta correta.
+                </p>
 
-  <p>
-    Se errar, não tem problema! Você poderá tentar novamente até acertar.
-  </p>
+                <p>
+                  Se errar, não tem problema! Você poderá tentar novamente até
+                  acertar.
+                </p>
 
-  <p>
-    O principal objetivo do jogo é aprender enquanto joga.
-  </p>
+                <p>O principal objetivo do jogo é aprender enquanto joga.</p>
 
-  <p>Como jogar é muito simples: basta observar, responder e aprender com:</p>
+                <p>
+                  Como jogar é muito simples: basta observar, responder e aprender
+                  com:
+                </p>
 
-  <ul>
-    <li>os sinais em Libras</li>
-    <li>os nomes em português</li>
-    <li>os significados</li>
-    <li>e as imagens</li>
-  </ul>
+                <ul>
+                  <li>os sinais em Libras</li>
+                  <li>os nomes em português</li>
+                  <li>os significados</li>
+                  <li>e as imagens</li>
+                </ul>
 
-  <p>
-    Tudo isso vai ajudar na memorização e na compreensão do conteúdo.
-  </p>
+                <p>
+                  Tudo isso vai ajudar na memorização e na compreensão do conteúdo.
+                </p>
 
-  <p>
-    Esse aprendizado é muito importante para que você conheça melhor o seu
-    próprio corpo.
-  </p>
-</div>
+                <p>
+                  Esse aprendizado é muito importante para que você conheça melhor
+                  o seu próprio corpo.
+                </p>
+              </div>
             )}
 
             <div className="modal__bottom">
@@ -349,12 +358,18 @@ export default function Home() {
       )}
 
       {openGlossary && (
-        <div className="modal" role="dialog" aria-modal="true" aria-label="Sinalário">
+        <div
+          className="modal"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Sinalário"
+        >
           <div className="modal__backdrop" onClick={closeGlossary} />
 
           <div className="modal__panel">
             <div className="modal__top">
               <div className="modal__title">Sinalário</div>
+
               <button
                 className="modal__close"
                 onClick={closeGlossary}
@@ -391,12 +406,18 @@ export default function Home() {
       )}
 
       {openMascots && (
-        <div className="modal" role="dialog" aria-modal="true" aria-label="Opções de mascote">
+        <div
+          className="modal"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Opções de mascote"
+        >
           <div className="modal__backdrop" onClick={closeMascots} />
 
           <div className="modal__panel modal__panel--image">
             <div className="modal__top">
               <div className="modal__title">Mascote escolhido!</div>
+
               <button
                 className="modal__close"
                 onClick={closeMascots}
@@ -422,6 +443,74 @@ export default function Home() {
                 type="button"
               >
                 FECHAR
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {openLevelSelect && (
+        <div
+          className="modal"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Escolha da fase"
+        >
+          <div
+            className="modal__backdrop"
+            onClick={() => setOpenLevelSelect(false)}
+          />
+
+          <div className="modal__panel modal__panel--levels">
+            <div className="modal__top">
+              <div className="modal__title">Escolha uma fase</div>
+
+              <button
+                className="modal__close"
+                onClick={() => setOpenLevelSelect(false)}
+                aria-label="Fechar"
+                type="button"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="levelSelect">
+              <button
+                className="levelSelect__btn"
+                onClick={() => start("basico")}
+                type="button"
+              >
+                <span className="levelSelect__title">Fase 1</span>
+                <span className="levelSelect__text">Começar pelo início</span>
+              </button>
+
+              <button
+                className="levelSelect__btn"
+                onClick={() => start("intermediario")}
+                type="button"
+              >
+                <span className="levelSelect__title">Fase 2</span>
+                <span className="levelSelect__text">Continuar o desafio</span>
+              </button>
+
+              <button
+                className="levelSelect__btn"
+                onClick={() => start("avancado")}
+                type="button"
+              >
+                <span className="levelSelect__title">Fase 3</span>
+                <span className="levelSelect__text">Desafio avançado</span>
+              </button>
+            </div>
+
+            <div className="modal__bottom">
+              <button
+                className="home__btnYellow secondary"
+                onClick={() => setOpenLevelSelect(false)}
+                type="button"
+              >
+                VOLTAR
               </button>
             </div>
           </div>

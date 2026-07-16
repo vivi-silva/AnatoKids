@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { QUESTIONS, LEVELS } from "../data/questions.js";
 import { useGame } from "../state/GameContext.jsx";
@@ -19,14 +19,15 @@ export default function Level() {
 
   const [showOverlay, setShowOverlay] = useState(false);
   const [feedback, setFeedback] = useState(null); // "ok" | "err" | null
+  const [selectedOptionId, setSelectedOptionId] = useState(null);
+
+  // Evita somar ponto novamente se a pessoa voltar e acertar a mesma pergunta
+  const [answeredCorrectIds, setAnsweredCorrectIds] = useState(() => new Set());
+
+  const feedbackTimerRef = useRef(null);
 
   const current = questions[index];
   const levelLabel = getLevelLabel(levelId);
-
-  const progressText = useMemo(() => {
-    if (!questions.length) return "Sem perguntas";
-    return `Pergunta ${index + 1} / ${questions.length}`;
-  }, [questions.length, index]);
 
   const isLastQuestion = index >= questions.length - 1;
 
@@ -39,23 +40,58 @@ export default function Level() {
   const okVideoSrc = `${import.meta.env.BASE_URL}videos/feedback/acerto.mp4`;
   const errVideoSrc = `${import.meta.env.BASE_URL}videos/feedback/erro.mp4`;
 
-  function handleAnswer(option) {
-    if (locked) return;
+  useEffect(() => {
+    return () => {
+      if (feedbackTimerRef.current) {
+        clearTimeout(feedbackTimerRef.current);
+      }
+    };
+  }, []);
 
-    const correct = !!option.correct;
-
-    setLocked(true);
-    setFeedback(correct ? "ok" : "err");
-
-    if (correct) game.addPoint();
-
-    setShowOverlay(true);
+  function clearFeedbackTimer() {
+    if (feedbackTimerRef.current) {
+      clearTimeout(feedbackTimerRef.current);
+      feedbackTimerRef.current = null;
+    }
   }
 
-  function continueAfterCorrect() {
+  function resetAnswerVisualState() {
+    clearFeedbackTimer();
     setShowOverlay(false);
     setFeedback(null);
     setLocked(false);
+    setSelectedOptionId(null);
+  }
+
+  function handleAnswer(option) {
+    if (locked || !current) return;
+
+    const correct = !!option.correct;
+
+    clearFeedbackTimer();
+
+    setLocked(true);
+    setSelectedOptionId(option.id);
+    setFeedback(correct ? "ok" : "err");
+
+    if (correct && !answeredCorrectIds.has(current.id)) {
+      game.addPoint();
+
+      setAnsweredCorrectIds((prev) => {
+        const next = new Set(prev);
+        next.add(current.id);
+        return next;
+      });
+    }
+
+    // Pequeno atraso para a criança ver a alternativa destacada antes do popup
+    feedbackTimerRef.current = setTimeout(() => {
+      setShowOverlay(true);
+    }, correct ? 650 : 500);
+  }
+
+  function continueAfterCorrect() {
+    resetAnswerVisualState();
 
     if (index < questions.length - 1) {
       setIndex((i) => i + 1);
@@ -65,15 +101,18 @@ export default function Level() {
   }
 
   function tryAgainAfterWrong() {
-    setShowOverlay(false);
-    setFeedback(null);
-    setLocked(false);
+    resetAnswerVisualState();
+  }
+
+  function previousQuestion() {
+    if (index <= 0) return;
+
+    resetAnswerVisualState();
+    setIndex((i) => Math.max(0, i - 1));
   }
 
   function exitToHome() {
-    setShowOverlay(false);
-    setFeedback(null);
-    setLocked(false);
+    resetAnswerVisualState();
     navigate("/");
   }
 
@@ -82,24 +121,19 @@ export default function Level() {
       <div className="gameBg">
         <div className="gameScreen">
           <div className="hudOverlay">
-            <div className="hudMain">
-              <div className="hudMain__left">
+            <div className="hudBar">
+              <div className="hudBar__left">
                 <h1 className="hudTitle">{levelLabel}</h1>
+              </div>
 
-                <div className="hudProgress">
-                  <div className="hudProgress__track">
-                    <div
-                      className="hudProgress__fill"
-                      style={{ width: "0%" }}
-                    />
-                  </div>
-                  <div className="hudProgress__meta">
-                    <span className="hudMeta">0/0</span>
-                  </div>
+              <div className="hudBar__center">
+                <div className="progressLine" aria-label="Sem perguntas">
+                  <div className="progressLine__fill" style={{ width: "0%" }} />
+                  <span className="progressLine__label">0/0</span>
                 </div>
               </div>
 
-              <div className="hudMain__right">
+              <div className="hudBar__right">
                 <div className="scoreBadge">⭐ {game.score}</div>
 
                 <button className="btn btn-blue" onClick={() => navigate("/")}>
@@ -131,32 +165,36 @@ export default function Level() {
       <div className="gameScreen">
         {/* HUD GAMEFICADO */}
         <div className="hudOverlay">
-  <div className="hudBar">
-    <div className="hudBar__left">
-      <h1 className="hudTitle">{levelLabel}</h1>
-    </div>
+          <div className="hudBar">
+            <div className="hudBar__left">
+              <h1 className="hudTitle">{levelLabel}</h1>
+            </div>
 
-    <div className="hudBar__center">
-      <div className="progressLine" aria-label={`Progresso ${currentQuestionNumber} de ${totalQuestions}`}>
-        <div
-          className="progressLine__fill"
-          style={{ width: `${progressPercent}%` }}
-        />
-        <span className="progressLine__label">
-          {currentQuestionNumber}/{totalQuestions}
-        </span>
-      </div>
-    </div>
+            <div className="hudBar__center">
+              <div
+                className="progressLine"
+                aria-label={`Progresso ${currentQuestionNumber} de ${totalQuestions}`}
+              >
+                <div
+                  className="progressLine__fill"
+                  style={{ width: `${progressPercent}%` }}
+                />
 
-    <div className="hudBar__right">
-      <div className="scoreBadge">⭐ {game.score}</div>
+                <span className="progressLine__label">
+                  {currentQuestionNumber}/{totalQuestions}
+                </span>
+              </div>
+            </div>
 
-      <button className="btn btn-blue" onClick={exitToHome}>
-        Sair
-      </button>
-    </div>
-  </div>
-</div>
+            <div className="hudBar__right">
+              <div className="scoreBadge">⭐ {game.score}</div>
+
+              <button className="btn btn-blue" onClick={exitToHome}>
+                Sair
+              </button>
+            </div>
+          </div>
+        </div>
 
         {/* Card principal do quiz */}
         <div className="gameCard">
@@ -186,43 +224,70 @@ export default function Level() {
             <div className="quizLayout__answers">
               <div className="answerGrid answerGrid--vertical">
                 {current.options.map((opt, optionIndex) => {
-  const pt = opt.pt ?? opt.text ?? "";
-  const dati = opt.dati ?? pt;
-  const optionLetter = String.fromCharCode(65 + optionIndex); // A, B, C...
+                  const pt = opt.pt ?? opt.text ?? "";
+                  const dati = opt.dati ?? pt;
+                  const optionLetter = String.fromCharCode(65 + optionIndex);
 
-  return (
-    <button
-      key={opt.id}
-      className="btn btn-blue optionBtn optionBtn--vertical"
-      onClick={() => handleAnswer(opt)}
-      disabled={locked}
-      style={{ opacity: locked ? 0.78 : 1 }}
-    >
-      <div className="optionBtn__content">
-        <span className="optionBtn__label">{optionLetter})</span>
+                  const isSelected = selectedOptionId === opt.id;
+                  const isCorrectSelected = isSelected && opt.correct;
+                  const isWrongSelected = isSelected && !opt.correct;
 
-        <div className="optionBtn__texts">
-          <span className="optionBtn__pt">{pt}</span>
-          <span className="optionBtn__dati dati">{dati}</span>
-        </div>
+                  return (
+                    <button
+                      key={opt.id}
+                      className={[
+                        "btn",
+                        "btn-blue",
+                        "optionBtn",
+                        "optionBtn--vertical",
+                        isCorrectSelected ? "is-correct" : "",
+                        isWrongSelected ? "is-wrong" : "",
+                      ]
+                        .filter(Boolean)
+                        .join(" ")}
+                      onClick={() => handleAnswer(opt)}
+                      disabled={locked}
+                      type="button"
+                    >
+                      <div className="optionBtn__content">
+                        <span className="optionBtn__label">
+                          {optionLetter})
+                        </span>
 
-        {opt.image && (
-          <img
-            className="optionBtn__image"
-            src={`${import.meta.env.BASE_URL}${opt.image}`}
-            alt={pt}
-          />
-        )}
-      </div>
-    </button>
-  );
-})}
-                  
+                        <div className="optionBtn__texts">
+                          <span className="optionBtn__pt">{pt}</span>
+                          <span className="optionBtn__dati dati">{dati}</span>
+                        </div>
+
+                        {opt.image && (
+                          <img
+                            className="optionBtn__image"
+                            src={`${import.meta.env.BASE_URL}${opt.image}`}
+                            alt={pt}
+                          />
+                        )}
+                      </div>
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </div>
 
           <div className="actionsRow">
+            <button
+              className="btn btn-blue"
+              onClick={previousQuestion}
+              disabled={index === 0 || locked || showOverlay}
+              type="button"
+            >
+              ← Voltar pergunta
+            </button>
+
+            <button className="btn btn-blue" onClick={exitToHome} type="button">
+              Escolher fase
+            </button>
+
             <span style={{ fontWeight: 850, color: "rgba(11,22,48,0.70)" }}>
               Selecione uma resposta para continuar.
             </span>
@@ -259,16 +324,24 @@ export default function Level() {
 
               <div className="quizOverlay__actions">
                 {feedback === "ok" ? (
-                  <button className="btn btn-gold" onClick={continueAfterCorrect}>
-                    {isLastQuestion ? "Concluir nível" : "Continuar"}
+                  <button
+                    className="btn btn-gold"
+                    onClick={continueAfterCorrect}
+                    type="button"
+                  >
+                    {isLastQuestion ? "Concluir fase" : "Continuar"}
                   </button>
                 ) : (
-                  <button className="btn btn-gold" onClick={tryAgainAfterWrong}>
+                  <button
+                    className="btn btn-gold"
+                    onClick={tryAgainAfterWrong}
+                    type="button"
+                  >
                     Tentar novamente
                   </button>
                 )}
 
-                <button className="btn btn-blue" onClick={exitToHome}>
+                <button className="btn btn-blue" onClick={exitToHome} type="button">
                   Sair
                 </button>
               </div>

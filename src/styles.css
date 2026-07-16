@@ -467,6 +467,34 @@ textarea {
   background: rgba(255, 255, 255, 0.35);
   padding: 10px;
 }
+.optionBtn.is-correct {
+  background: linear-gradient(180deg, rgba(171, 255, 199, 0.95), rgba(52, 211, 153, 0.88));
+  border: 3px solid rgba(22, 163, 74, 0.95);
+  color: #063b1f;
+  box-shadow:
+    0 0 0 6px rgba(34, 197, 94, 0.18),
+    0 16px 42px rgba(22, 163, 74, 0.22);
+  opacity: 1 !important;
+}
+
+.optionBtn.is-wrong {
+  background: linear-gradient(180deg, rgba(255, 210, 210, 0.95), rgba(248, 113, 113, 0.82));
+  border: 3px solid rgba(220, 38, 38, 0.85);
+  color: #4a0a0a;
+  box-shadow:
+    0 0 0 6px rgba(239, 68, 68, 0.14),
+    0 16px 42px rgba(220, 38, 38, 0.18);
+  opacity: 1 !important;
+}
+
+.optionBtn:disabled {
+  cursor: not-allowed;
+}
+
+.optionBtn.is-correct:disabled,
+.optionBtn.is-wrong:disabled {
+  filter: none;
+}
 
 /* ================================
    AÇÕES
