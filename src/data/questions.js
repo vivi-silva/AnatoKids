@@ -156,7 +156,7 @@ export const QUESTIONS = {
       options: [
         opt("figadoA", "Baço", "images/opcoes/baco.png", false),
         opt("figadoB", "Fígado", "images/opcoes/figado.png", true),
-        opt("figadoC", "Célula", "images/opcoes/celulas.png", false),
+        opt("figadoC", "Coração", "images/opcoes/coracao.png", false),
       ],
     },
     {
@@ -177,7 +177,7 @@ export const QUESTIONS = {
       options: [
         opt("uteroA", "Intestino", "images/opcoes/intestino.png", false),
         opt("uteroB", "Útero", "images/opcoes/utero.png", true),
-        opt("uteroC", "Veias", "images/opcoes/veias.png", false),
+        opt("uteroC", "Veias e Artérias", "images/opcoes/veias.png", false),
       ],
     },
     {
@@ -193,9 +193,9 @@ export const QUESTIONS = {
     {
       id: "celula",
       videoUrl: "videos/intermediario/celula.mp4",
-      promptPT: "O que todos nós temos dentro do corpo, mas só podemos ver com microscópio?",
+      promptPT: "O que forma nossos órgãos e tecidos e só podemos ver com a ajuda do microscópio?",
       options: [
-        opt("celulaA", "Veias", "images/opcoes/utero.png", false),
+        opt("celulaA", "Veias e Artérias", "images/opcoes/utero.png", false),
         opt("celulaB", "Célula", "images/opcoes/celulas.png", true),
         opt("celulaC", "Baço", "images/opcoes/baco.png", false),
       ],
@@ -205,7 +205,7 @@ export const QUESTIONS = {
       videoUrl: "videos/intermediario/veias.mp4",
       promptPT: "Onde o sangue circula por todo o corpo?",
       options: [
-        opt("veiasA", "Veias", "images/opcoes/veias.png", true),
+        opt("veiasA", "Veias e Artérias", "images/opcoes/veias.png", true),
         opt("veiasB", "Célula", "images/opcoes/celulas.png", false),
         opt("veiasC", "Baço", "images/opcoes/baco.png", false),
       ],
@@ -300,7 +300,7 @@ export const QUESTIONS = {
     {
       id: "rins",
       videoUrl: "videos/avancado/rins.mp4",
-      promptPT: "Quais são os dois órgãos do corpo que são iguais e que ficam nas costas?",
+      promptPT: "Quais são os dois órgãos do corpo que ficam dentro da barriga, na altura das costas, e produz o xixi?",
       options: [
         opt("rinsA", "Pulmão", "images/opcoes/pulmao.png", false),
         opt("rinsB", "Ovários", "images/opcoes/ovarios.png", false),
