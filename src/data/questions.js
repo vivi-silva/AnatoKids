@@ -195,7 +195,7 @@ export const QUESTIONS = {
       videoUrl: "videos/intermediario/celula.mp4",
       promptPT: "O que forma nossos órgãos e tecidos e só podemos ver com a ajuda do microscópio?",
       options: [
-        opt("celulaA", "Veias e Artérias", "images/opcoes/utero.png", false),
+        opt("celulaA", "Veias e Artérias", "images/opcoes/veias.png", false),
         opt("celulaB", "Célula", "images/opcoes/celulas.png", true),
         opt("celulaC", "Baço", "images/opcoes/baco.png", false),
       ],
